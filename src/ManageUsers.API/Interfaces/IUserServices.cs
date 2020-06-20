@@ -8,5 +8,9 @@ namespace ManageUsers.API.Interfaces
         IEnumerable<UserEntity> GetUsers();
 
         UserEntity AddUser(UserEntity model);
+
+        UserEntity DeleteUser(UserEntity model);
+
+        UserEntity UpdateUser(UserEntity model);
     }
 }

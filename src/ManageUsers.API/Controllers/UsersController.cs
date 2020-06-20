@@ -39,7 +39,35 @@ namespace ManageUsers.API.Controllers
             try
             {
                 var user = _userServices.AddUser(model);
-                return new CreatedResult("/user/", new { model = user, message = "Todo Item Created Successfully" });
+                return new CreatedResult("/user/", new { user = user, message = "User Created Successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpDelete("/user")]
+        public IActionResult DeleteUser(UserEntity model)
+        {
+            try
+            {
+                var user = _userServices.DeleteUser(model);
+                return new OkObjectResult(new { message = "User Deleted successfully", user });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpPut("/user")]
+        public IActionResult UpdateUser(UserEntity model)
+        {
+            try
+            {
+                var user = _userServices.UpdateUser(model);
+                return new CreatedResult("/user/", new { user = user, message = "User Updated Successfully" });
             }
             catch (Exception e)
             {

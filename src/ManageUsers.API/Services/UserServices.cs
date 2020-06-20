@@ -32,5 +32,50 @@ namespace ManageUsers.API.Services
 
             return model;
         }
+
+        public UserEntity DeleteUser(UserEntity model)
+        {
+            UserEntity user = db.UserEntities.Find(model.UserId);
+
+            if (user is null) throw new ArgumentOutOfRangeException(message: "No such user in the database", null);
+
+            db.UserEntities.Remove(user);
+            db.SaveChanges();
+
+            return user;
+        }
+
+        public UserEntity UpdateUser(UserEntity model)
+        {
+            UserEntity user = db.UserEntities.Find(model.UserId);
+
+            if (user is null) throw new ArgumentOutOfRangeException(message: "No such user in the database", null);
+
+            if (model.FirstName != null)
+            {
+                user.FirstName = model.FirstName;
+                db.SaveChanges();
+            }
+
+            if (model.LastName != null)
+            {
+                user.LastName = model.LastName;
+                db.SaveChanges();
+            }
+
+            if (model.Email != null)
+            {
+                user.Email = model.Email;
+                db.SaveChanges();
+            }
+
+            if (model.Phone != null)
+            {
+                user.Phone = model.Phone;
+                db.SaveChanges();
+            }
+
+            return user;
+        }
     }
 }
