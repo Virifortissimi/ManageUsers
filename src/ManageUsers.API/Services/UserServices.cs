@@ -23,6 +23,12 @@ namespace ManageUsers.API.Services
             return model;
         }
 
+        public UserEntity GetUser(UserEntity model)
+        {
+            UserEntity user = db.UserEntities.Find(model.Email);
+            return user;
+        }
+
         public UserEntity AddUser(UserEntity model)
         {
             if (model is null) throw new ArgumentNullException(message: "User cannot be null", null);
@@ -33,9 +39,9 @@ namespace ManageUsers.API.Services
             return model;
         }
 
-        public UserEntity DeleteUser(UserEntity model)
+        public UserEntity DeleteUser(int id)
         {
-            UserEntity user = db.UserEntities.Find(model.UserId);
+            UserEntity user = db.UserEntities.Find(id);
 
             if (user is null) throw new ArgumentOutOfRangeException(message: "No such user in the database", null);
 
@@ -45,9 +51,26 @@ namespace ManageUsers.API.Services
             return user;
         }
 
-        public UserEntity UpdateUser(UserEntity model)
+        public UserEntity UpdateUser(int id, UserEntity model)
         {
-            UserEntity user = db.UserEntities.Find(model.UserId);
+            UserEntity user = db.UserEntities.Find(id);
+
+            if (user is null) throw new ArgumentOutOfRangeException(message: "No such user in the database", null);
+
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Email = model.Email;
+            user.Phone = model.Phone;
+            db.SaveChanges();
+
+            return user;
+        }
+
+        public UserEntity UpdateUserDetails(int id, UserEntity model)
+
+        {
+            UserEntity user = db.UserEntities.Find(id);
 
             if (user is null) throw new ArgumentOutOfRangeException(message: "No such user in the database", null);
 

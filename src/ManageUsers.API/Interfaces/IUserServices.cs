@@ -7,10 +7,14 @@ namespace ManageUsers.API.Interfaces
     {
         IEnumerable<UserEntity> GetUsers();
 
+        UserEntity GetUser(UserEntity model);
+
         UserEntity AddUser(UserEntity model);
 
-        UserEntity DeleteUser(UserEntity model);
+        UserEntity DeleteUser(int id);
 
-        UserEntity UpdateUser(UserEntity model);
+        UserEntity UpdateUser(int id, UserEntity model);
+
+        UserEntity UpdateUserDetails(int id, UserEntity model);
     }
 }

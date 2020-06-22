@@ -33,6 +33,20 @@ namespace ManageUsers.API.Controllers
             }
         }
 
+        [HttpGet("/user/singleuser")]
+        public IActionResult GetAUser(UserEntity model)
+        {
+            try
+            {
+                var User = _userServices.GetUser(model);
+                return Ok(User);
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
         [HttpPost("/user")]
         public IActionResult AddUser(UserEntity model)
         {
@@ -47,12 +61,12 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpDelete("/user")]
-        public IActionResult DeleteUser(UserEntity model)
+        [HttpDelete("/user/{id}")]
+        public IActionResult DeleteUser(int id)
         {
             try
             {
-                var user = _userServices.DeleteUser(model);
+                var user = _userServices.DeleteUser(id);
                 return new OkObjectResult(new { message = "User Deleted successfully", user });
             }
             catch (Exception e)
@@ -61,13 +75,27 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpPut("/user")]
-        public IActionResult UpdateUser(UserEntity model)
+        [HttpPut("/user/{id}")]
+        public IActionResult UpdateUser(int id, UserEntity model)
         {
             try
             {
-                var user = _userServices.UpdateUser(model);
+                var user = _userServices.UpdateUser(id, model);
                 return new CreatedResult("/user/", new { user = user, message = "User Updated Successfully" });
+            }
+            catch (Exception e)
+            {
+                return BadRequest(new { message = e.Message });
+            }
+        }
+
+        [HttpPatch("/user/{id}")]
+        public IActionResult UpdateUserDetails(int id, UserEntity model)
+        {
+            try
+            {
+                var user = _userServices.UpdateUserDetails(id, model);
+                return new CreatedResult("/user/", new { user = user, message = "User FirstName Updated Successfully" });
             }
             catch (Exception e)
             {
