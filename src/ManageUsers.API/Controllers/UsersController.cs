@@ -2,12 +2,15 @@ using System;
 using ManageUsers.API.Interfaces;
 using ManageUsers.API.Models;
 using ManageUsersAPI.Data.Entities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ManageUsers.API.Controllers
 {
 
     [ApiController]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class UsersController : ControllerBase
     {
 
@@ -19,7 +22,7 @@ namespace ManageUsers.API.Controllers
             _userServices = userServices;
         }
 
-        [HttpGet("/user")]
+        [HttpGet("v1/user")]
         public IActionResult GetAllUser()
         {
             try
@@ -33,7 +36,7 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpGet("/user/singleuser")]
+        [HttpGet("v1/user/singleuser")]
         public IActionResult GetAUser(UserEntity model)
         {
             try
@@ -47,7 +50,7 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpPost("/user")]
+        [HttpPost("v1/user")]
         public IActionResult AddUser(UserEntity model)
         {
             try
@@ -61,7 +64,7 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpDelete("/user/{id}")]
+        [HttpDelete("v1/user/{id}")]
         public IActionResult DeleteUser(int id)
         {
             try
@@ -75,7 +78,7 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpPut("/user/{id}")]
+        [HttpPut("v1/user/{id}")]
         public IActionResult UpdateUser(int id, UserEntity model)
         {
             try
@@ -89,7 +92,7 @@ namespace ManageUsers.API.Controllers
             }
         }
 
-        [HttpPatch("/user/{id}")]
+        [HttpPatch("v1/user/{id}")]
         public IActionResult UpdateUserDetails(int id, UserEntity model)
         {
             try

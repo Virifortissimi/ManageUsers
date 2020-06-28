@@ -1,3 +1,4 @@
+using System.Text;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
 using System.IO;
+using ManageUsers.API.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 
 namespace ManageUsers.API
 {
@@ -41,6 +45,33 @@ namespace ManageUsers.API
 
             services.AddTransient<IUserServices, UserServices>();
 
+            //For JWT...APPSettings.json and AppSettings.cs
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
+
+            //JWT Authentication
+            var appSettings = appSettingsSection.Get<AppSettings>();
+            var key = Encoding.ASCII.GetBytes(appSettings.SecretKey);
+
+            services.AddAuthentication(auth =>
+            {
+                auth.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                auth.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(jwt =>
+            {
+                jwt.RequireHttpsMetadata = false;
+                jwt.SaveToken = true;
+                jwt.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false
+                };
+            });
+
+            services.AddScoped<IAuthenticateService, AuthenticateService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -51,7 +82,7 @@ namespace ManageUsers.API
                     TermsOfService = new Uri("https://example.com/terms"),
                     Contact = new OpenApiContact
                     {
-                        Name = "Shayne Boyer",
+                        Name = "Gabriel Emmanuel",
                         Email = string.Empty,
                         Url = new Uri("https://twitter.com/eghosa_gabriel"),
                     },
@@ -65,7 +96,7 @@ namespace ManageUsers.API
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider svp)
         {
             // Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
@@ -74,7 +105,8 @@ namespace ManageUsers.API
             // specifying the Swagger JSON endpoint.
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Manage Users V1");
+                c.RoutePrefix = string.Empty;
             });
 
             if (env.IsDevelopment())
@@ -95,6 +127,14 @@ namespace ManageUsers.API
                 //    name: "default",
                 //    pattern: "{controller=Swagger}/{action=Index}/{id?}");
             });
+
+            MigrateDatabaseContexts(svp);
+        }
+
+        public void MigrateDatabaseContexts(IServiceProvider svp)
+        {
+            var applicationDbContext = svp.GetRequiredService<UserDbContext>();
+            applicationDbContext.Database.Migrate();
         }
     }
 }
