@@ -8,10 +8,10 @@ This is an Aspnet microservices that allows you to manage users, you can `add_us
 
 **ManageUsersMicroservice** depends on the following nuget packages
 
-    - [Microsoft.AspNetCore.Authentication.JwtBearer ](dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer --version 5.0.0-preview.6.20312.15)
-    - [Microsoft.EntityFrameworkCore.SqlServer](dotnet add package Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.6.20312.4)
-    - [Microsoft.EntityFrameworkCore.Tools](dotnet add package Microsoft.EntityFrameworkCore.Tools --version 5.0.0-preview.6.20312.4)
-    - [Swashbuckle.AspNetCore.Swagger](dotnet add package Swashbuckle.AspNetCore.Swagger --version 5.5.1)
+    - [Microsoft.AspNetCore.Authentication.JwtBearer ](Microsoft.AspNetCore.Authentication.JwtBearer --version 5.0.0-preview.6.20312.15)
+    - [Microsoft.EntityFrameworkCore.SqlServer](Microsoft.EntityFrameworkCore.SqlServer --version 5.0.0-preview.6.20312.4)
+    - [Microsoft.EntityFrameworkCore.Tools](Microsoft.EntityFrameworkCore.Tools --version 5.0.0-preview.6.20312.4)
+    - [Swashbuckle.AspNetCore.Swagger](Swashbuckle.AspNetCore.Swagger --version 5.5.1)
 
 # Installation or Running
 
