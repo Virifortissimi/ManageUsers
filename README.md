@@ -1,4 +1,4 @@
-# Intro to this Microservice
+# Intro to Gabriel's Manage-User-Microservice
 
 This is an Aspnet microservices that allows you to manage users, you can `add_user, remove_user, set_user_first_name, set_user_last_name, change_user_email, set_user_phone, get_user_first_name`. 
 
